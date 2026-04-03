@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Converter | Minimalist</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            color: white;
+            padding: 12px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            resize: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        #output {
+            width: 100%;
+            min-height: 100px;
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            margin-top: 10px;
+            box-sizing: border-box;
+            color: var(--accent);
+            line-height: 1.6;
+        }
+
+        .btn-copy {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        .stats {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 5px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Binary Translator</h1>
+    <p>Convert text to machine code instantly.</p>
+    
+    <textarea id="inputText" placeholder="Start typing your sentence..."></textarea>
+    <div class="stats" id="charCount">Characters: 0</div>
+
+    <div class="output-header">
+        <label>Binary Output</label>
+        <button class="btn-copy" onclick="copyText()">Copy Result</button>
+    </div>
+    <div id="output">Binary results will appear here...</div>
+</div>
+
+<script>
+    const input = document.getElementById('inputText');
+    const output = document.getElementById('output');
+    const charCount = document.getElementById('charCount');
+
+    input.addEventListener('input', () => {
+        const text = input.value;
+        charCount.innerText = `Characters: ${text.length}`;
+
+        if (text.length === 0) {
+            output.innerText = "Binary results will appear here...";
+            return;
+        }
+
+        const binaryResult = text.split('').map(char => {
+            return char.charCodeAt(0).toString(2).padStart(8, '0');
+        }).join(' ');
+
+        output.innerText = binaryResult;
+    });
+
+    function copyText() {
+        const textToCopy = output.innerText;
+        if(textToCopy && textToCopy !== "Binary results will appear here...") {
+            navigator.clipboard.writeText(textToCopy);
+            const btn = document.querySelector('.btn-copy');
+            btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = "Copy Result", 2000);
+        }
+    }
+</script>
+
+</body>
+</html>
